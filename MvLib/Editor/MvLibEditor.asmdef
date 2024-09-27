@@ -1,0 +1,18 @@
+{
+    "name": "MvLibEditor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:abb1ee2825d0ec745a8ef3117ab13d37"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

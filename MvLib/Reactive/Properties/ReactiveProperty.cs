@@ -18,7 +18,7 @@ namespace MvLib.Reactive
         /// <summary>
         /// Событие, которое вызывается при изменении значения свойства.
         /// </summary> 
-        public event Action<T> OnValueChanged; // Используем события для уведомлений
+        public event Action<T> OnValueChanged;
 
         /// <summary>
         /// Значение свойства.
@@ -32,7 +32,7 @@ namespace MvLib.Reactive
                 if (!EqualityComparer<T>.Default.Equals(this.value, value))
                 {
                     this.value = value;
-                    OnValueChanged?.Invoke(value); // Уведомляем подписчиков о изменении
+                    OnValueChanged?.Invoke(value);
                 }
             }
         }
@@ -82,6 +82,12 @@ namespace MvLib.Reactive
             observer.OnNext(value);
             OnValueChanged += observer.OnNext;
 
+            return new Unsubscriber(() => OnValueChanged -= observer.OnNext);
+        }
+
+        public IDisposable SubscribeWithotNotification(IObserver<T> observer)
+        { 
+            OnValueChanged += observer.OnNext; 
             return new Unsubscriber(() => OnValueChanged -= observer.OnNext);
         }
 

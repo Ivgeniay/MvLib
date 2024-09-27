@@ -1,4 +1,6 @@
-﻿using UnityEditor;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 namespace MvLib
@@ -214,9 +216,70 @@ namespace MvLib
             return new Color(r + m, g + m, b + m);
         }
 
+        /// <summary>
+        /// Возвращает новый вектор с измененным значением X, сохраняя текущие значения Y и Z.
+        /// </summary>
+        /// <param name="original">Исходный вектор.</param>
+        /// <param name="newX">Новое значение для компонента X.</param>
+        /// <returns>Новый вектор с обновленным X.</returns>
+        public static Vector3 WithX(this Vector3 original, float newX) => new Vector3(newX, original.y, original.z);
+        /// <summary>
+        /// Возвращает новый вектор с измененным значением Y, сохраняя текущие значения X и Z.
+        /// </summary>
+        /// <param name="original">Исходный вектор.</param>
+        /// <param name="newY">Новое значение для компонента Y.</param>
+        /// <returns>Новый вектор с обновленным Y.</returns>
+        public static Vector3 WithY(this Vector3 original, float newY) => new Vector3(original.x, newY, original.z);
+        /// <summary>
+        /// Возвращает новый вектор с измененным значением Z, сохраняя текущие значения X и Y.
+        /// </summary>
+        /// <param name="original">Исходный вектор.</param>
+        /// <param name="newZ">Новое значение для компонента Z.</param>
+        /// <returns>Новый вектор с обновленным Z.</returns>
+        public static Vector3 WithZ(this Vector3 original, float newZ) => new Vector3(original.x, original.y, newZ);
 
-        public static Vector3 WithX(this Vector3 original, float newX) => new Vector3(newX, original.y, original.z); 
-        public static Vector3 WithY(this Vector3 original, float newY) => new Vector3(original.x, newY, original.z);  
-        public static Vector3 WithZ(this Vector3 original, float newZ) => new Vector3(original.x, original.y, newZ); 
+
+        #region Collection
+        /// <summary>
+        /// Возвращает сумму всех векторов в коллекции.
+        /// </summary>
+        /// <param name="source">Коллекция векторов.</param>
+        /// <returns>Вектор, являющийся суммой всех векторов в коллекции.</returns>
+        public static Vector3 Sum(this IEnumerable<Vector3> source)
+        {
+            return source.Aggregate(Vector3.zero, (acc, v) => acc + v);
+        }
+
+        /// <summary>
+        /// Возвращает среднее значение всех векторов в коллекции.
+        /// </summary>
+        /// <param name="source">Коллекция векторов.</param>
+        /// <returns>Средний вектор.</returns>
+        public static Vector3 Average(this IEnumerable<Vector3> source)
+        {
+            int count = source.Count();
+            return count > 0 ? source.Sum() / count : Vector3.zero;
+        }
+
+        /// <summary>
+        /// Возвращает вектор с минимальными значениями компонентов X, Y и Z среди всех векторов в коллекции.
+        /// </summary>
+        /// <param name="source">Коллекция векторов.</param>
+        /// <returns>Вектор, содержащий минимальные компоненты среди всех векторов.</returns>
+        public static Vector3 Min(this IEnumerable<Vector3> source)
+        {
+            return source.Any() ? source.Aggregate((acc, v) => Vector3.Min(acc, v)) : Vector3.zero;
+        }
+
+        /// <summary>
+        /// Возвращает вектор с максимальными значениями компонентов X, Y и Z среди всех векторов в коллекции.
+        /// </summary>
+        /// <param name="source">Коллекция векторов.</param>
+        /// <returns>Вектор, содержащий максимальные компоненты среди всех векторов.</returns>
+        public static Vector3 Max(this IEnumerable<Vector3> source)
+        {
+            return source.Any() ? source.Aggregate((acc, v) => Vector3.Max(acc, v)) : Vector3.zero;
+        }
+        #endregion
     }
 }
